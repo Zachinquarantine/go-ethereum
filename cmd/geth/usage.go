@@ -220,7 +220,7 @@ var AppHelpFlagGroups = []flags.FlagGroup{
 	{
 		Name: "ALIASED (deprecated)",
 		Flags: []cli.Flag{
-			utils.NoUSBFlag,
+			utils.LegacyMinerGasTargetFlag,
 		},
 	},
 	{
