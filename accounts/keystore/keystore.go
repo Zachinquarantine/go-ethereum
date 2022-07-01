@@ -488,8 +488,22 @@ func (ks *KeyStore) Update(a accounts.Account, passphrase, newPassphrase string)
 
 // ImportPreSaleKey decrypts the given Ethereum presale wallet and stores
 // a key file in the key directory. The key file is encrypted with the same passphrase.
+//
+// Deprecated: Use ImportKeyStore instead.
 func (ks *KeyStore) ImportPreSaleKey(keyJSON []byte, passphrase string) (accounts.Account, error) {
 	a, _, err := importPreSaleKey(ks.storage, keyJSON, passphrase)
+	if err != nil {
+		return a, err
+	}
+	ks.cache.add(a)
+	ks.refreshWallets()
+	return a, nil
+}
+
+// ImportKeyStore decrypts the given Ethereum wallet and stores
+// a key file in the key directory. The key file is encrypted with the same passphrase.
+func (ks *KeyStore) ImportKeyStore(keyJSON []byte, passphrase string) (accounts.Account, error) {
+	a, _, err := importKeyStore(ks.storage, keyJSON, passphrase)
 	if err != nil {
 		return a, err
 	}

@@ -212,8 +212,20 @@ func (ks *KeyStore) ImportECDSAKey(key []byte, passphrase string) (account *Acco
 
 // ImportPreSaleKey decrypts the given Ethereum presale wallet and stores
 // a key file in the key directory. The key file is encrypted with the same passphrase.
+//
+// Deprecated: Use ImportKeyFile instead.
 func (ks *KeyStore) ImportPreSaleKey(keyJSON []byte, passphrase string) (ccount *Account, _ error) {
 	account, err := ks.keystore.ImportPreSaleKey(common.CopyBytes(keyJSON), passphrase)
+	if err != nil {
+		return nil, err
+	}
+	return &Account{account}, nil
+}
+
+// ImportKeyFIle decrypts the given Ethereum wallet key and stores
+// a key file in the key directory. The key file is encrypted with the same passphrase.
+func (ks *KeyStore) ImportKeyStore(keyJSON []byte, passphrase string) (ccount *Account, _ error) {
+	account, err := ks.keystore.ImportKeyStore(common.CopyBytes(keyJSON), passphrase)
 	if err != nil {
 		return nil, err
 	}
